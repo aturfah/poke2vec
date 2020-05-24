@@ -357,8 +357,6 @@ if __name__ == "__main__":
         write_mprob(m_prob, mprob_filename)
         write_cprob(c_prob, cprob_filename)
 
-        raise RuntimeError("DOOT")
-
         unique_outfile = open(uniq_filename, "w")
         [unique_outfile.write("{}\n".format(x)) for x in list(m_prob.keys())]
         unique_outfile.close()

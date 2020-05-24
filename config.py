@@ -27,8 +27,8 @@ class PullDataConfig():
 class GenerateTeamsConfig():
     # Thresholds < 1 => pct of total from corresponding file
     def __init__(self):
-        self.dataFiles = ["{month}_{tier}_{level}.json".format(month=MONTH, tier=TIER, level=LEVEL)] # "2020-01_gen8ou_1825.json"]
-        self.thresholdLimit = [0.01]
+        self.dataFiles = ["{month}_{tier}_{level}.json".format(month=MONTH, tier=TIER, level=LEVEL)]
+        self.thresholdLimit = [0.005]
         self.outputFilenamePrefix = "teams"
         self.uniqueFilenamePrefix = "unique"
         self.mprobFilenamePrefix = "mprob"

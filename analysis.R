@@ -20,3 +20,43 @@ plot(mat_pcs$x[, 1], mat_pcs$x[, 2], col="lightblue", cex=0.7, pch=19)
 # text(jitter(mat_pcs$x[, 2], amount=jitter_amt) ~ jitter(mat_pcs$x[, 1], amount=jitter_amt), labels = name_vec, cex=0.8)
 text(mat_pcs$x[, 2] ~ mat_pcs$x[, 1], labels = name_vec, cex=0.8)
 dev.off()
+
+
+distance_mat <- matrix(NA, nrow=nrow(avg_mat), ncol=nrow(avg_mat))
+rownames(distance_mat) <- name_vec
+colnames(distance_mat) <- name_vec
+for (i in 1:nrow(avg_mat)) {
+  for (j in 1:nrow(avg_mat)) {
+    if (i == j) next
+    if (is.na(distance_mat[i, j])) {
+      vec_j <- unlist(avg_mat[j, ])
+      vec_i <- unlist(avg_mat[i, ])
+      temp <- dist(rbind(vec_i, vec_j))
+      distance_mat[i, j] <- temp
+      distance_mat[j, i] <- temp      
+    }
+  }
+}
+rm(i, j, vec_i, vec_j, temp)
+
+
+clefable_idx <- which(name_vec == "Clefable")
+dragapult_idx <- which(name_vec == "Dragapult")
+toxapex_idx <- which(name_vec == "Toxapex")
+hawlucha_idx <- which(name_vec == "Hawlucha")
+quagsire_idx <- which(name_vec == "Quagsire")
+barraskewda_idx <- which(name_vec == "Barraskewda")
+
+closest.n <- function(x, n) {
+  l = length(x)
+  temp <- sort(x)
+  temp[1:n]
+}
+closest.n(distance_mat[clefable_idx, ], 5)
+closest.n(distance_mat[dragapult_idx, ], 5)
+closest.n(distance_mat[toxapex_idx, ], 5)
+closest.n(distance_mat[hawlucha_idx, ], 5)
+closest.n(distance_mat[quagsire_idx, ], 5)
+closest.n(distance_mat[barraskewda_idx, ], 5)
+
+apply(distance_mat, 1, mean, na.rm=T)

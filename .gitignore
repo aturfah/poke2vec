@@ -1,0 +1,10 @@
+env/*
+__pycache__/
+.Rhistory
+*.pyc
+data/
+
+plot.png
+good_output/
+*.txt
+*.json

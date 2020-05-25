@@ -51,14 +51,27 @@ closest.n <- function(x, n) {
   temp[1:n]
 }
 
-test_pokemon <- c("Clefable", "Quagsire", "Hawlucha", "Tapu-Bulu", "Toxapex", "Dragapult", "Chansey")
+test_pokemon <- c("Clefable", "Landorus-Therian", "Tapu-Bulu",
+                  "Hawlucha", "Swampert-Mega", "Sableye-Mega",
+                  "Chansey", "Ribombee", "Ferrothorn", "Weavile")
+num_to_check = 10
 
 for (poke in test_pokemon) {
   idx <- which(name_vec == poke)
-  if (!idx) next
+  if (length(idx) == 0) next
   vec <- distance_mat[idx, ]
-  print(closest.n(vec, 5))
-  print(furthest.n(vec, 5))
+  closest <- closest.n(vec, num_to_check)
+  closest.names <- names(closest)
+  furthest <- furthest.n(vec, num_to_check)
+  furthest.names <- names(furthest)
+  
+  cat(paste("Pokemon", poke))
+  cat("\n")
+  cat(paste("Closest:", paste(closest.names, round(closest, 3), collapse=" | ")))
+  cat("\n")
+  cat(paste("Furthest:", paste(furthest.names, round(furthest, 3), collapse=" | ")))
+  cat("\n")
+  cat("\n")
 }
 
 ## Some metric of closeness

@@ -144,6 +144,7 @@ def team_validity_check(team):
     rotom_present = False
     greninja_present = False
     gourgeist_present = False
+    therian_incarnate = set()
     for x in team:
         if x in team_members:
             invalid_team = True
@@ -161,6 +162,17 @@ def team_validity_check(team):
         elif "greninja" in x.lower() and greninja_present is True:
             invalid_team = True
             break
+
+        if x.lower() in ["thundurus", "thundurus-therian", "landorus", "landorus-therian", "tornadus", "tornadus-therian"]:
+            if x in therian_incarnate:
+                invalid_team = True
+                break
+            elif "-" in x:
+                therian_incarnate.add(x)
+                therian_incarnate.add(x.split("-")[0])
+            else:
+                therian_incarnate.add(x)
+                therian_incarnate.add("{}-Therian".format(x))
 
         if "rotom" in x.lower() and rotom_present is False:
             rotom_present = True

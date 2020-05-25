@@ -39,24 +39,27 @@ for (i in 1:nrow(avg_mat)) {
 }
 rm(i, j, vec_i, vec_j, temp)
 
-
-clefable_idx <- which(name_vec == "Clefable")
-dragapult_idx <- which(name_vec == "Dragapult")
-toxapex_idx <- which(name_vec == "Toxapex")
-hawlucha_idx <- which(name_vec == "Hawlucha")
-quagsire_idx <- which(name_vec == "Quagsire")
-barraskewda_idx <- which(name_vec == "Barraskewda")
+furthest.n <- function(x, n) {
+  l = length(x)
+  temp <- sort(x)
+  tail(temp, n)
+}
 
 closest.n <- function(x, n) {
   l = length(x)
   temp <- sort(x)
   temp[1:n]
 }
-closest.n(distance_mat[clefable_idx, ], 5)
-closest.n(distance_mat[dragapult_idx, ], 5)
-closest.n(distance_mat[toxapex_idx, ], 5)
-closest.n(distance_mat[hawlucha_idx, ], 5)
-closest.n(distance_mat[quagsire_idx, ], 5)
-closest.n(distance_mat[barraskewda_idx, ], 5)
 
+test_pokemon <- c("Clefable", "Quagsire", "Hawlucha", "Tapu-Bulu", "Toxapex", "Dragapult", "Chansey")
+
+for (poke in test_pokemon) {
+  idx <- which(name_vec == poke)
+  if (!idx) next
+  vec <- distance_mat[idx, ]
+  print(closest.n(vec, 5))
+  print(furthest.n(vec, 5))
+}
+
+## Some metric of closeness
 apply(distance_mat, 1, mean, na.rm=T)

@@ -12,7 +12,7 @@ TEAMS_MAT_DIR = "data/mat"
 Path(TEAMS_MAT_DIR).mkdir(parents=True, exist_ok=True)
 
 TIER = "gen7ou"
-MONTH = "2020-06"
+MONTH = "2019-06"
 LEVEL = "1695"
 
 # Pull_data Config
@@ -43,16 +43,16 @@ class GenerateTeamsConfig():
             100,000; 64 => 117s
             100,000; 88 => 217s
             150,000; 88 => 332s
+            150,000; 125 => 
             200,000; 66 => 230s
             200,000; 88 => 395s
             200,000; 125 => 706s
-            500,000; 
         """
-        self.beamSearchThreshold = 500000
+        self.beamSearchThreshold = 150000
         self.teamLength = 6
         self.method = "beam"
-        self.checkpointIteration = 10000
-        self.bufferSize = 1000
+        self.checkpointIteration = 15000
+        self.bufferSize = 2000
 
 # Model Config
 class ModelConfig():

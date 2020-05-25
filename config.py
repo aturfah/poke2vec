@@ -11,8 +11,8 @@ Path(TEAMS_TXT_DIR).mkdir(parents=True, exist_ok=True)
 TEAMS_MAT_DIR = "data/mat"
 Path(TEAMS_MAT_DIR).mkdir(parents=True, exist_ok=True)
 
-TIER = "gen8ou"
-MONTH = "2020-03"
+TIER = "gen7ou"
+MONTH = "2019-06"
 LEVEL = "1695"
 
 # Pull_data Config
@@ -37,13 +37,16 @@ class GenerateTeamsConfig():
             Threshold; Metagame Size vs Time
             50,000; 64  => 69s
             50,000; 70  => 80s
+            50,000; 92  => 117
             50,000; 102 => 127s
+            70,000; 92 => 162s
             100,000; 64 => 117s
             100,000; 88 => 217s
             200,000; 66 => 230s
             200,000; 88 => 395s
+            200,000; 125 => 706s
         """
-        self.beamSearchThreshold = 200000
+        self.beamSearchThreshold = 150000
         self.teamLength = 6
         self.method = "beam"
         self.checkpointIteration = 10000
@@ -60,5 +63,6 @@ class ModelConfig():
         self.onehotFile = "{month}_{tier}_onehot".format(month=MONTH, tier=TIER)
 
         # Actual Model Stuff
-        self.hiddenLayerSize = 10
+        self.numEpochs = 15
+        self.hiddenLayerSize = 20
         self.batchSize = 512

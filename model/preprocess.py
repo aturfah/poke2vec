@@ -100,7 +100,7 @@ def onehot_encode_data(file_names):
                 weight_mat[idx, 0] = weight_encode
                 idx += 1
 
-    super_duper_mat = npy.hstack(super_mat, weight_mat)
+    super_duper_mat = npy.hstack((super_mat, weight_mat))
     npy.random.shuffle(super_duper_mat)
 
     data_mat = super_duper_mat[:, 0:num_pokes]

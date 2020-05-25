@@ -3,7 +3,7 @@ setwd("~/Documents/projects/poke2vec/")
 source("sanity checks/helpers.R")
 
 #### Prepare Data ####
-filename = "data/txt/teams_2020-03_gen8ou_1695.txt"
+filename = "data/txt/teams_2019-06_gen7ou_1695.txt"
 temp <- generate.team.encode(filename)
 team_encode <- temp$teams
 poke_names <- temp$pokemon

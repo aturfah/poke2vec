@@ -100,17 +100,12 @@ def onehot_encode_data(file_names):
                 weight_mat[idx, 0] = weight_encode
                 idx += 1
 
-    # super_duper_mat = npy.zeros( (npy.sum(weight_mat), super_mat.shape[1]), dtype=npy.float16)
-    # sdm_idx = 0
-    # for idx in range(super_mat.shape[0]):
-    #     for count in range(weight_mat[idx][0]):
-    #         super_duper_mat[sdm_idx] = weight_mat[idx]
-    #         sdm_idx += 1
+    super_duper_mat = npy.hstack(super_mat, weight_mat)
+    npy.random.shuffle(super_duper_mat)
 
-    # weight_mat = npy.ones((super_duper_mat.shape[0], 0))
-
-    data_mat = super_mat[:, 0:num_pokes]
-    label_mat = super_mat[:, num_pokes]
+    data_mat = super_duper_mat[:, 0:num_pokes]
+    label_mat = super_duper_mat[:, num_pokes]
+    weight_mat = super_duper_mat[:, num_pokes + 1]
 
     # Save the files locally
     matrix_datafile = join(config.TEAMS_MAT_DIR, m_conf.matrixDataFile)

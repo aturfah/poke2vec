@@ -139,6 +139,9 @@ def team_validity_check(team):
     # Species Clause Heuristics
     invalid_team = False
 
+    # TODO: Garchomp + Garchomp-Mega Can't Occur
+    # TODO: See if can mix this with regional forms
+
     team_members = set()
     mega_present = False
     rotom_present = False

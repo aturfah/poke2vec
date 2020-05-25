@@ -6,6 +6,8 @@ import json
 from model import preprocess
 from model import model
 
+from config import ModelConfig
+
 def output_results(model, onehot_mapping):
     names = list(onehot_mapping.keys())
 
@@ -31,6 +33,6 @@ if __name__ == "__main__":
     onehot_mapping, data_mat, label_mat, weight_mat = preprocess.prepare_data(fnames)
 
     model = model.Model(data_mat, label_mat, weight_mat)
-    model.train(10)
+    model.train(ModelConfig().numEpochs)
 
     output_results(model, onehot_mapping)

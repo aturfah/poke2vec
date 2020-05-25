@@ -29,7 +29,8 @@ class Model():
     def train(self, n_epochs=5):
         self._model.fit(self.train_data, self.train_labels,
                         epochs=n_epochs, batch_size=ModelConfig().batchSize,
-                        shuffle=True, validation_split=0.2)
+                        sample_weight=self.train_weights,
+                        shuffle=True, validation_split=0)
 
     def predict(self, data):
         probability_model = tf.keras.Sequential([

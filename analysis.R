@@ -53,7 +53,8 @@ closest.n <- function(x, n) {
 
 test_pokemon <- c("Clefable", "Landorus-Therian", "Tapu-Bulu",
                   "Hawlucha", "Swampert-Mega", "Sableye-Mega",
-                  "Chansey", "Ribombee", "Ferrothorn", "Weavile")
+                  "Chansey", "Ribombee", "Ferrothorn", "Weavile",
+                  "Dragapult", "Pelipper", "Seismitoad", "Excadrill")
 num_to_check = 10
 
 for (poke in test_pokemon) {

@@ -43,12 +43,12 @@ class GenerateTeamsConfig():
             100,000; 64 => 117s
             100,000; 88 => 217s
             150,000; 88 => 332s
-            150,000; 125 => 
+            150,000; 125 => 544s
             200,000; 66 => 230s
             200,000; 88 => 395s
             200,000; 125 => 706s
         """
-        self.beamSearchThreshold = 150000
+        self.beamSearchThreshold = 100000
         self.teamLength = 6
         self.method = "beam"
         self.checkpointIteration = 15000

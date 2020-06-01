@@ -12,7 +12,7 @@ rownames(v_mat) <- name_vec
 rownames(avg_mat) <- name_vec
 
 mat_pcs <- prcomp(avg_mat)
-plot(mat_pcs$sdev^2 / sum(mat_pcs$sdev^2), type='o', ylab="Pct Variance", ylim=c(0, 1))
+# plot(mat_pcs$sdev^2 / sum(mat_pcs$sdev^2), type='o', ylab="Pct Variance", ylim=c(0, 1))
 
 # jitter_amt = 0.00
 # png("plot.png", width=851, height=755)

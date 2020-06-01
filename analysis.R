@@ -76,4 +76,4 @@ for (poke in test_pokemon) {
 }
 
 ## Some metric of closeness
-apply(distance_mat, 1, mean, na.rm=T)
+# apply(distance_mat, 1, mean, na.rm=T)

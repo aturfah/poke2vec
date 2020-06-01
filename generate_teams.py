@@ -240,8 +240,8 @@ def generate_teams(info, m_prob, c_prob, out_filename):
 
         team_prob = calculate_team_prob(team, m_prob, c_prob) / total_prob
 
-        # team_appearances = sample_team(total_teams - num_chosen, team_prob, pct_chosen)
-        team_appearances = round(total_teams * team_prob)
+        team_appearances = sample_team(total_teams - num_chosen, team_prob, pct_chosen)
+        # team_appearances = round(total_teams * team_prob)
 
         if team_appearances > 0:
             num_chosen += team_appearances

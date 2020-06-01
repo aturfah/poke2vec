@@ -58,5 +58,8 @@ set.seed(0)
 rand.dist <- runif(nrow(joined_data))
 rand.dist <- rand.dist / sum(rand.dist)
 
+
+## TODO: KL For Conditional is https://math.stackexchange.com/a/3678282
 c(KL.obs=KL.DIVERGENCE(joined_data$true.prob, joined_data$est.prob),
   KL.rand=KL.DIVERGENCE(joined_data$true.prob, rand.dist))
+

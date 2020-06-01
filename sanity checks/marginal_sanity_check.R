@@ -28,12 +28,13 @@ joined.data <- as_tibble(marginal_probs) %>%
   mutate(pokemon=names(marginal_probs), value=value/6) %>%
   rename(est.prob=value) %>% select(pokemon, est.prob) %>%
   right_join(as_tibble(true_marginal), by=c('pokemon'='pokemon')) %>%
+  mutate(est.prob = ifelse(is.na(est.prob), 0, est.prob)) %>%
   mutate(prob.delta = true.prob - est.prob) %>%
   arrange(desc(true.prob))
 
 
 set.seed(0)
-rand.dist <- runif(length(poke_names))
+rand.dist <- runif(nrow(joined.data))
 rand.dist <- rand.dist / sum(rand.dist)
 
 c(KL.obs=KL.DIVERGENCE(joined.data$true.prob, joined.data$est.prob),

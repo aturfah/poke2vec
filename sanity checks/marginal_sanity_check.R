@@ -9,7 +9,7 @@ team_encode <- temp$teams
 poke_names <- temp$pokemon
 counts <- temp$counts
 
-filename = "data/txt/mprob_2020-03_gen8ou_1695.txt"
+filename = "data/txt/mprob_2019-06_gen7ou_1695.txt"
 true_marginal = read.csv(filename, stringsAsFactors = F)
 
 rm(temp, filename)
@@ -17,13 +17,12 @@ rm(temp, filename)
 
 marginal_probs <- colSums(team_encode) / sum(counts)
 
-marginal_probs[which(poke_names %in% c("Clefable", "Excadrill", "Dragapult"))]
-marginal_probs[which(poke_names %in% c("Mew", "Hydreigon", "Crawdaunt"))]
-marginal_probs[which(poke_names %in% c("Indeedee", "Mamoswine", "Lapras"))]
+# marginal_probs[which(poke_names %in% c("Clefable", "Excadrill", "Dragapult"))]
+# marginal_probs[which(poke_names %in% c("Mew", "Hydreigon", "Crawdaunt"))]
+# marginal_probs[which(poke_names %in% c("Indeedee", "Mamoswine", "Lapras"))]
+# names(sort(marginal_probs, decreasing = T))
 
-names(sort(marginal_probs, decreasing = T))
-
-library(dplyr)
+suppressMessages(library(dplyr))
 
 joined.data <- as_tibble(marginal_probs) %>%
   mutate(pokemon=names(marginal_probs), value=value/6) %>%
@@ -32,9 +31,11 @@ joined.data <- as_tibble(marginal_probs) %>%
   mutate(prob.delta = true.prob - est.prob) %>%
   arrange(desc(true.prob))
 
+
+set.seed(0)
 rand.dist <- runif(length(poke_names))
 rand.dist <- rand.dist / sum(rand.dist)
 
-c(obs.marg=KL.DIVERGENCE(joined.data$true.prob, joined.data$est.prob),
-  rand.marg=KL.DIVERGENCE(joined.data$true.prob, rand.dist))
+c(KL.obs=KL.DIVERGENCE(joined.data$true.prob, joined.data$est.prob),
+  KL.rand=KL.DIVERGENCE(joined.data$true.prob, rand.dist))
 

@@ -19,8 +19,17 @@ generate.team.encode <- function(filename) {
               counts=counts))
 }
 
-KL.DIVERGENCE <- function(p, q, fix.val=1e-10) {
+KL.DIVERGENCE <- function(p, q, p2=p, fix.val=1e-10) {
   p[which(p == 0)] = fix.val
   q[which(q == 0)] = fix.val
-  sum(p * log(p / q))
+  sum(p2 * log(p / q))
+}
+
+compute_true_joint <- function(true_conditional, true_marginal) {
+  as_tibble(true_conditional) %>%
+    left_join(as_tibble(true_marginal),
+              by=c('cond.pokemon'='pokemon'),
+              suffix=c(".cond", ".marg")) %>%
+    mutate(true.prob.joint=true.prob.cond * true.prob.marg) %>%
+    select(base.pokemon, cond.pokemon, true.prob.joint)
 }

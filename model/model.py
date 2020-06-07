@@ -32,13 +32,40 @@ class Model():
                         sample_weight=self.train_weights,
                         shuffle=True, validation_split=0.15)
 
-    def predict(self, data):
+    def predict(self, data, species_clause):
         probability_model = tf.keras.Sequential([
             self._model,
             tf.keras.layers.Softmax()
         ])
 
-        return probability_model(data)
+        results = probability_model(data)
+
+        if species_clause:
+            mask = tf.cast(tf.equal(data, 0), tf.float32)
+            results = tf.math.multiply(results, mask)
+
+        return results
+
+    def test(self, test_data, test_lab, species_clause):
+        results = self.predict(test_data, species_clause)
+        results = tf.math.argmax(results, 1)
+
+        # [print(test_lab[i], tf.keras.backend.get_value(results[i])) for i in range(len(test_lab))]
+
+        confusion_matrix = tf.math.confusion_matrix(results, test_lab)
+
+        correct_incorrect = tf.math.equal(results, test_lab)
+        num_correct = tf.math.count_nonzero(correct_incorrect)
+
+        pct_correct = num_correct / results.shape[0]
+
+        print("Test Error: {pct} ({n_c}/{tot})".format(
+            pct=round(tf.keras.backend.get_value(pct_correct), 3),
+            n_c = tf.keras.backend.get_value(num_correct),
+            tot=results.shape[0]
+        ))
+
+        return confusion_matrix
 
     def layer_weights(self, name):
         return self._model.get_layer(name).variables

@@ -39,7 +39,23 @@ mat_pcs <- prcomp(avg_mat)
 #   }
 # }
 
-## Cosine Distance
+#### Confusion Matrix ####
+conf_mat <- read.table("confusion.txt")
+colnames(conf_mat) <- c(as.character(name_vec), "UNK")
+rownames(conf_mat) <- c(as.character(name_vec), "UNK")
+
+## Predictions on Unknowns
+unk_think <- conf_mat$UNK / sum(conf_mat$UNK)
+names(unk_think) <- rownames(conf_mat)
+cat("Unknown most commonly predicted as:\n")
+rev(sort(unk_think))[1:8]
+cat("\n\n")
+
+cat(paste("% Correct:", round(100 * sum(diag(as.matrix(conf_mat))) / sum(as.matrix(conf_mat)), 2 ) )  )
+cat("\n\n")
+
+
+#### Cosine Distance ####
 distance_mat <- matrix(NA, nrow=nrow(avg_mat), ncol=nrow(avg_mat))
 rownames(distance_mat) <- name_vec
 colnames(distance_mat) <- name_vec

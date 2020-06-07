@@ -22,6 +22,24 @@ text(mat_pcs$x[, 2] ~ mat_pcs$x[, 1], labels = name_vec, cex=0.8)
 # dev.off()
 
 
+## L2 Distance
+# distance_mat <- matrix(NA, nrow=nrow(avg_mat), ncol=nrow(avg_mat))
+# rownames(distance_mat) <- name_vec
+# colnames(distance_mat) <- name_vec
+# for (i in 1:nrow(avg_mat)) {
+#   for (j in 1:nrow(avg_mat)) {
+#     if (i == j) next
+#     if (is.na(distance_mat[i, j])) {
+#       vec_j <- unlist(avg_mat[j, ])
+#       vec_i <- unlist(avg_mat[i, ])
+#       temp <- dist(rbind(vec_i, vec_j))
+#       distance_mat[i, j] <- temp
+#       distance_mat[j, i] <- temp      
+#     }
+#   }
+# }
+
+## Cosine Distance
 distance_mat <- matrix(NA, nrow=nrow(avg_mat), ncol=nrow(avg_mat))
 rownames(distance_mat) <- name_vec
 colnames(distance_mat) <- name_vec
@@ -31,18 +49,19 @@ for (i in 1:nrow(avg_mat)) {
     if (is.na(distance_mat[i, j])) {
       vec_j <- unlist(avg_mat[j, ])
       vec_i <- unlist(avg_mat[i, ])
-      temp <- dist(rbind(vec_i, vec_j))
+      temp <- (vec_i %*% vec_j) / (sqrt(vec_i %*% vec_i) * sqrt(vec_j %*% vec_j))
       distance_mat[i, j] <- temp
       distance_mat[j, i] <- temp      
     }
   }
 }
+
 rm(i, j, vec_i, vec_j, temp)
 
 furthest.n <- function(x, n) {
   l = length(x)
   temp <- sort(x)
-  tail(temp, n)
+  rev(tail(temp, n))
 }
 
 closest.n <- function(x, n) {
@@ -51,9 +70,9 @@ closest.n <- function(x, n) {
   temp[1:n]
 }
 
-test_pokemon <- c("Clefable", "Landorus-Therian", "Tapu-Bulu",
+test_pokemon <- c("Landorus-Therian", "Clefable", "Tapu-Bulu",
                   "Hawlucha", "Swampert-Mega", "Sableye-Mega",
-                  "Chansey", "Ribombee", "Ferrothorn", "Weavile",
+                  "Chansey", "Ribombee", "Ferrothorn", "Weavile", "Bisharp",
                   "Dragapult", "Pelipper", "Seismitoad", "Excadrill")
 num_to_check = 10
 
@@ -69,8 +88,8 @@ for (poke in test_pokemon) {
   cat(paste("Pokemon", poke))
   cat("\n")
   cat(paste("Closest:", paste(closest.names, round(closest, 3), collapse=" | ")))
-  # cat("\n")
-  # cat(paste("Furthest:", paste(furthest.names, round(furthest, 3), collapse=" | ")))
+  cat("\n")
+  cat(paste("Furthest:", paste(furthest.names, round(furthest, 3), collapse=" | ")))
   cat("\n")
   cat("\n")
 }

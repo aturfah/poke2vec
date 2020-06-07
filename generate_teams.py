@@ -81,6 +81,7 @@ def generate_probabilities(chaos_conf, threshold):
             temp_map[cond_name] = {
                 "score": teammate_score,
                 "inflation": teammate_infl_pct,
+                "raw_prob": teammate_cond_prob,
                 "prob": max(teammate_cond_prob, 0)
             }
 
@@ -322,6 +323,7 @@ def generate_filename(prefix, gt_conf):
     fname = join(config.TEAMS_TXT_DIR, fname)
     return fname
 
+
 def write_mprob(m_prob, fname):
     mprob_file = open(fname, 'w')
     mprob_file.write("pokemon,true.prob\n")
@@ -329,6 +331,7 @@ def write_mprob(m_prob, fname):
         mprob_file.write("{},{}\n".format(name, m_prob[name]["pct"]))
 
     mprob_file.close()
+
 
 def write_cprob(c_prob, fname):
     cprob_file = open(fname, 'w')

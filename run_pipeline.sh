@@ -1,7 +1,7 @@
 echo "Hello!"
 
 echo "Pulling down real teams from replays"
-python get_ream_teams.py
+python get_real_teams.py
 
 echo "Pulling data from smogon servers"
 python pull_data.py

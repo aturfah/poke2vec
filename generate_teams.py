@@ -10,6 +10,7 @@ from operator import mul
 from functools import reduce
 from math import ceil, factorial
 from time import time
+import gc
 
 from numpy.random import binomial
 
@@ -317,6 +318,8 @@ def generate_teams_beam(info, m_prob, c_prob):
     while counter < GenerateTeamsConfig().teamLength:
         step_time = time()
         base_teams, team_probs = beam_step(base_teams, names)
+
+        gc.collect()
         print("Beam Step: {} ({}) | Time Elapsed {:.02f}s ({:.02f}s)".format(
             counter,
             len(base_teams),

@@ -26,10 +26,12 @@ KL.DIVERGENCE <- function(p, q, p2=p, fix.val=1e-10) {
 }
 
 compute_true_joint <- function(true_conditional, true_marginal) {
-  as_tibble(true_conditional) %>%
+  temp <- as_tibble(true_conditional) %>%
     left_join(as_tibble(true_marginal),
               by=c('cond.pokemon'='pokemon'),
               suffix=c(".cond", ".marg")) %>%
     mutate(true.prob.joint=true.prob.cond * true.prob.marg) %>%
     select(base.pokemon, cond.pokemon, true.prob.joint)
+
+  temp
 }

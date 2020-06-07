@@ -151,29 +151,42 @@ def prepare_test_data(onehot_mapping):
 
     num_pokes = len(onehot_mapping.keys())
 
-    super_mat = npy.zeros( (len(teams) * GenerateTeamsConfig().teamLength, num_pokes + 1), dtype=npy.float16)
-    idx = 0
+    valid_teams = []
     for team_str in teams:
         team = team_str.split(",")
         team = team[:-1]
 
         for poke_idx in range(len(team)):
+            num_invalid_pokes = 0
+            if team[poke_idx] not in onehot_mapping.keys():
+                continue
+
             temp_arr = team[:poke_idx] + team[(poke_idx+1):]
 
             line_encode = npy.zeros(num_pokes)
             for poke in temp_arr:
-                line_encode[onehot_mapping[poke]] = 1/5
+                if poke not in onehot_mapping.keys():
+                    num_invalid_pokes += 1
+                else:
+                    line_encode[onehot_mapping[poke]] = 1
 
             result_encode = npy.zeros(1)
             result_encode[0] = onehot_mapping[team[poke_idx]]
 
-            super_mat[idx, :] = npy.concatenate([line_encode, result_encode])
-            idx += 1
+            if num_invalid_pokes >= GenerateTeamsConfig().teamLength - 1:
+                continue
+
+            line_encode = [x / (GenerateTeamsConfig().teamLength - 1 - num_invalid_pokes) for x in line_encode]
+
+            valid_teams.append(npy.concatenate([line_encode, result_encode]))
+
+    super_mat = npy.zeros( (len(valid_teams) * GenerateTeamsConfig().teamLength, num_pokes + 1), dtype=npy.float16)
+    idx = 0
+    for row in valid_teams:
+        super_mat[idx, :] = row
+        idx += 1
 
     data_mat = super_mat[:, 0:num_pokes]
     label_mat = super_mat[:, num_pokes]
 
-    print(data_mat.shape)
-    print(label_mat.shape)
-
-    raise RuntimeError("PEW")
+    return data_mat, label_mat

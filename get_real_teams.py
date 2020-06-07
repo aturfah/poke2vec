@@ -26,6 +26,12 @@ def parse_battle_urls(page_url):
     return output
 
 
+def clean_poke(poke):
+    if "," in poke:
+        return poke.split(",")[0]
+    else:
+        return poke
+
 def parse_teams(battle_json_url):
     r = requests.get(battle_json_url)
     battle_json = json.loads(r.text)
@@ -44,20 +50,22 @@ def parse_teams(battle_json_url):
         if not components:
             continue
 
-        if components[0] != "poke":
-            continue
+        if components[0] == "poke":
+            poke = clean_poke(components[2])
 
-        poke = components[2]
-        if "," in poke:
-            poke = poke.split(",")[0]
-
-        if components[1] == "p1":
-            p1_team.append(poke)
-        elif components[1] == "p2":
-            p2_team.append(poke)
-
-        if len(p1_team) >= 6 and len(p2_team) >= 6:
-            break
+            if components[1] == "p1":
+                p1_team.append(poke)
+            elif components[1] == "p2":
+                p2_team.append(poke)
+        elif components[0] in ["j", "l", "turn", "inactive"]:
+            pass
+        elif components[0] == "detailschange":
+            player, source = [x.strip() for x in components[1].split(":")]
+            result = clean_poke(components[2])
+            if player == "p1a":
+                p1_team = [x if x != source else result for x in p1_team]
+            elif player == "p2a":
+                p2_team = [x if x != source else result for x in p2_team]
 
     if len(p1_team) != 6 or len(p2_team) != 6:
         raise RuntimeError("Invalid Team Length: {}".format(battle_json_url))

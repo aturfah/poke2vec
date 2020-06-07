@@ -87,6 +87,17 @@ def generate_probabilities(chaos_conf, threshold):
 
         conditional_probs[base_name] = temp_map
 
+
+    # TODO: There has to be a better way to do this...
+    # print("Ferrothorn")
+    # print(marginal_probs["Ferrothorn"])
+    # print(conditional_probs["Ferrothorn"]["Chansey"])
+
+    # print("Chansey")
+    # print(marginal_probs["Chansey"])
+    # print(conditional_probs["Chansey"]["Ferrothorn"])
+    # raise RuntimeError("DOOT")
+
     # Now make them valid distributions
     tot_marginal = sum([marginal_probs[name]["pct"] for name in marginal_probs.keys()])
 

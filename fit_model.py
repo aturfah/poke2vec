@@ -32,6 +32,11 @@ if __name__ == "__main__":
     fnames = preprocess.get_filenames()
     onehot_mapping, data_mat, label_mat, weight_mat = preprocess.prepare_data(fnames)
 
+    # Test results
+    test_data, test_lab = preprocess.prepare_test_data(onehot_mapping)
+
+    raise RuntimeError("DOOT")
+
     model = model.Model(data_mat, label_mat, weight_mat)
     model.train(ModelConfig().numEpochs)
 

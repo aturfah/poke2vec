@@ -5,3 +5,4 @@ rm umat.txt
 rm vmat.txt
 rm test.json
 rm plot.png
+rm confusion.txt

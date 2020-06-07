@@ -1,4 +1,6 @@
 # Driver code to fit and export the model
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 
 import numpy as npy
 import json
@@ -6,9 +8,10 @@ import json
 from model import preprocess
 from model import model
 
+import config
 from config import ModelConfig
 
-def output_results(model, onehot_mapping):
+def output_results(model, onehot_mapping, confusion_matrix):
     names = list(onehot_mapping.keys())
 
     u_mat = model.layer_weights("U-layer")[0]
@@ -25,6 +28,8 @@ def output_results(model, onehot_mapping):
 
         output[name] = temp
 
+    output["confusion_matrix"] = confusion_matrix.tolist()
+
     with open("test.json", "w") as outfile:
         json.dump(output, outfile)
 
@@ -35,9 +40,9 @@ if __name__ == "__main__":
     # Test results
     test_data, test_lab = preprocess.prepare_test_data(onehot_mapping)
 
-    raise RuntimeError("DOOT")
-
     model = model.Model(data_mat, label_mat, weight_mat)
     model.train(ModelConfig().numEpochs)
 
-    output_results(model, onehot_mapping)
+    conf_matrix = model.test(test_data, test_lab, species_clause=False)
+
+    output_results(model, onehot_mapping, conf_matrix)

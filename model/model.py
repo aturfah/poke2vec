@@ -65,7 +65,7 @@ class Model():
             tot=results.shape[0]
         ))
 
-        return confusion_matrix
+        return confusion_matrix.numpy()
 
     def layer_weights(self, name):
         return self._model.get_layer(name).variables

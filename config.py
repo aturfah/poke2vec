@@ -28,7 +28,7 @@ class GenerateTeamsConfig():
     # Thresholds < 1 => pct of total from corresponding file
     def __init__(self):
         self.dataFiles = ["{month}_{tier}_{level}.json".format(month=MONTH, tier=TIER, level=LEVEL)]
-        self.thresholdLimit = [0.006]
+        self.thresholdLimit = [0.01]
         self.outputFilenamePrefix = "teams"
         self.uniqueFilenamePrefix = "unique"
         self.mprobFilenamePrefix = "mprob"
@@ -70,5 +70,11 @@ class ModelConfig():
 
         # Actual Model Stuff
         self.numEpochs = 15
-        self.hiddenLayerSize = 15
+        self.hiddenLayerSize = 50
         self.batchSize = 512
+
+class TestTeamConfig():
+    def __init__(self):
+        self.year, self.month = [int(x) for x in MONTH.split("-")]
+        self.tier = TIER
+        self.out_file = "test_teams_{month}_{tier}.txt".format(month=MONTH, tier=TIER)

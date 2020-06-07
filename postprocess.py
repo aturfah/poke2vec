@@ -17,6 +17,9 @@ if __name__ == "__main__":
     names = list(data.keys())
 
     for name in names:
+        if name == "confusion_matrix":
+            continue
+
         names_file.write("{}\n".format(name.replace(" ", "-")))
         v_mat.append(data[name]["vvec"])
         u_mat.append(data[name]["uvec"])
@@ -29,3 +32,4 @@ if __name__ == "__main__":
     npy.savetxt("vmat.txt", v_mat)
     npy.savetxt("umat.txt", u_mat)
     npy.savetxt("avg_mat.txt", avg_mat)
+    npy.savetxt("confusion.txt", npy.array(data["confusion_matrix"]), fmt='%d')

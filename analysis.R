@@ -51,9 +51,13 @@ cat("Unknown most commonly predicted as:\n")
 rev(sort(unk_think))[1:8]
 cat("\n\n")
 
-cat(paste("% Correct:", round(100 * sum(diag(as.matrix(conf_mat))) / sum(as.matrix(conf_mat)), 2 ) )  )
+cat(paste("# Correct:", sum(diag(as.matrix(conf_mat)))))
+cat(paste("\n% Correct:", round(100 * sum(diag(as.matrix(conf_mat))) / sum(as.matrix(conf_mat)), 2 ) )  )
 cat("\n\n")
 
+cat(paste("# Uknown: ", sum(conf_mat$UNK)))
+cat(paste("\n% Unknown:", round(100 * sum(conf_mat$UNK) / sum(as.matrix(conf_mat)), 2 ) ))
+cat("\n\n")
 
 #### Cosine Distance ####
 distance_mat <- matrix(NA, nrow=nrow(avg_mat), ncol=nrow(avg_mat))

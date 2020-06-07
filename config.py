@@ -28,7 +28,7 @@ class GenerateTeamsConfig():
     # Thresholds < 1 => pct of total from corresponding file
     def __init__(self):
         self.dataFiles = ["{month}_{tier}_{level}.json".format(month=MONTH, tier=TIER, level=LEVEL)]
-        self.thresholdLimit = [0.01]
+        self.thresholdLimit = [0.005]
         self.outputFilenamePrefix = "teams"
         self.uniqueFilenamePrefix = "unique"
         self.mprobFilenamePrefix = "mprob"
@@ -51,6 +51,7 @@ class GenerateTeamsConfig():
             200,000; 200 => 1676s
             250,000; 89 => 470s
             250,000; 116 => 840s
+            250,000; 125 => 923s
         """
         self.beamSearchThreshold = 250000
         self.teamLength = 6

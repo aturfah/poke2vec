@@ -16,9 +16,9 @@ mat_pcs <- prcomp(avg_mat)
 
 # jitter_amt = 0.00
 # png("plot.png", width=851, height=755)
-# plot(mat_pcs$x[, 1], mat_pcs$x[, 2], col="lightblue", cex=0.7, pch=19)
-# # text(jitter(mat_pcs$x[, 2], amount=jitter_amt) ~ jitter(mat_pcs$x[, 1], amount=jitter_amt), labels = name_vec, cex=0.8)
-# text(mat_pcs$x[, 2] ~ mat_pcs$x[, 1], labels = name_vec, cex=0.8)
+plot(mat_pcs$x[, 1], mat_pcs$x[, 2], col="lightblue", cex=0.7, pch=19)
+# text(jitter(mat_pcs$x[, 2], amount=jitter_amt) ~ jitter(mat_pcs$x[, 1], amount=jitter_amt), labels = name_vec, cex=0.8)
+text(mat_pcs$x[, 2] ~ mat_pcs$x[, 1], labels = name_vec, cex=0.8)
 # dev.off()
 
 
@@ -69,8 +69,8 @@ for (poke in test_pokemon) {
   cat(paste("Pokemon", poke))
   cat("\n")
   cat(paste("Closest:", paste(closest.names, round(closest, 3), collapse=" | ")))
-  cat("\n")
-  cat(paste("Furthest:", paste(furthest.names, round(furthest, 3), collapse=" | ")))
+  # cat("\n")
+  # cat(paste("Furthest:", paste(furthest.names, round(furthest, 3), collapse=" | ")))
   cat("\n")
   cat("\n")
 }

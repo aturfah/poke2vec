@@ -3,6 +3,7 @@
 import config
 from config import GenerateTeamsConfig
 from config import ModelConfig
+from config import TestTeamConfig
 
 from os.path import join
 import numpy as npy
@@ -142,3 +143,37 @@ def prepare_data(file_names):
         # If not then load from the filenames
         return onehot_encode_data(file_names)
 
+def prepare_test_data(onehot_mapping):
+    test_teams_file = join(config.TEAMS_TXT_DIR, TestTeamConfig().out_file)
+    teams = []
+    with open(test_teams_file) as in_file:
+        teams.extend([x.strip() for x in in_file.readlines()])
+
+    num_pokes = len(onehot_mapping.keys())
+
+    super_mat = npy.zeros( (len(teams) * GenerateTeamsConfig().teamLength, num_pokes + 1), dtype=npy.float16)
+    idx = 0
+    for team_str in teams:
+        team = team_str.split(",")
+        team = team[:-1]
+
+        for poke_idx in range(len(team)):
+            temp_arr = team[:poke_idx] + team[(poke_idx+1):]
+
+            line_encode = npy.zeros(num_pokes)
+            for poke in temp_arr:
+                line_encode[onehot_mapping[poke]] = 1/5
+
+            result_encode = npy.zeros(1)
+            result_encode[0] = onehot_mapping[team[poke_idx]]
+
+            super_mat[idx, :] = npy.concatenate([line_encode, result_encode])
+            idx += 1
+
+    data_mat = super_mat[:, 0:num_pokes]
+    label_mat = super_mat[:, num_pokes]
+
+    print(data_mat.shape)
+    print(label_mat.shape)
+
+    raise RuntimeError("PEW")

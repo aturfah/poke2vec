@@ -15,11 +15,11 @@ python fit_model.py
 echo "Postprocessing"
 python postprocess.py
 
+echo "Getting Vector Clusters"
+Rscript analysis.R
+
 echo "Running KL Divergence Sanity Checks"
 echo "::Marginal"
 Rscript sanity\ checks/marginal_sanity_check.R 
 echo "::Conditional"
 Rscript sanity\ checks/cond_sanity_check.R 
-
-echo "Getting Vector Clusters"
-Rscript analysis.R

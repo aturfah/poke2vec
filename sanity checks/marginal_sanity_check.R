@@ -32,6 +32,8 @@ joined.data <- as_tibble(marginal_probs) %>%
   mutate(prob.delta = true.prob - est.prob) %>%
   arrange(desc(true.prob))
 
+head(joined.data, 10) %>% select(pokemon, est.prob, true.prob) %>%
+  mutate(est.prob=est.prob * 6, true.prob = true.prob * 6)
 
 set.seed(0)
 rand.dist <- runif(nrow(joined.data))

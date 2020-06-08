@@ -57,7 +57,7 @@ class GenerateTeamsConfig():
         self.teamLength = 6
         self.method = "beam"
         self.checkpointIteration = 15000
-        self.bufferSize = 2000
+        self.bufferSize = 10000
 
 # Model Config
 class ModelConfig():
@@ -72,7 +72,7 @@ class ModelConfig():
         # Actual Model Stuff
         self.numEpochs = 15
         self.hiddenLayerSize = 50
-        self.batchSize = 512
+        self.batchSize = 1024
 
 class TestTeamConfig():
     def __init__(self):

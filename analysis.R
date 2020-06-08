@@ -16,9 +16,9 @@ mat_pcs <- prcomp(avg_mat)
 
 # jitter_amt = 0.00
 # png("plot.png", width=851, height=755)
-# plot(mat_pcs$x[, 1], mat_pcs$x[, 2], col="lightblue", cex=0.7, pch=19)
+plot(mat_pcs$x[, 1], mat_pcs$x[, 2], col="lightblue", cex=0.7, pch=19)
 # text(jitter(mat_pcs$x[, 2], amount=jitter_amt) ~ jitter(mat_pcs$x[, 1], amount=jitter_amt), labels = name_vec, cex=0.8)
-# text(mat_pcs$x[, 2] ~ mat_pcs$x[, 1], labels = name_vec, cex=0.8)
+text(mat_pcs$x[, 2] ~ mat_pcs$x[, 1], labels = name_vec, cex=0.8)
 # dev.off()
 
 
@@ -44,20 +44,30 @@ conf_mat <- read.table("confusion.txt")
 colnames(conf_mat) <- c(as.character(name_vec), "UNK")
 rownames(conf_mat) <- c(as.character(name_vec), "UNK")
 
+cat(paste("Test Set Total:", sum(conf_mat), "\n"))
+
+cat("Test Set Usage:\n")
+rev(sort(colSums(conf_mat)))[1:8]
+
+cat("Test Set Predicted Usage:\n")
+rev(sort(rowSums(conf_mat)))[1:8]
+
+cat("\n\n")
+
 ## Predictions on Unknowns
 unk_think <- conf_mat$UNK / sum(conf_mat$UNK)
 names(unk_think) <- rownames(conf_mat)
+cat(paste("# Uknown: ", sum(conf_mat$UNK), "\n"))
+cat(paste("% Unknown:", round(100 * sum(conf_mat$UNK) / sum(as.matrix(conf_mat)), 2 ), "\n" ))
 cat("Unknown most commonly predicted as:\n")
 rev(sort(unk_think))[1:8]
 cat("\n\n")
 
-cat(paste("# Correct:", sum(diag(as.matrix(conf_mat)))))
-cat(paste("\n% Correct:", round(100 * sum(diag(as.matrix(conf_mat))) / sum(as.matrix(conf_mat)), 2 ) )  )
+cat(paste("# Correct:", sum(diag(as.matrix(conf_mat))), "\n"))
+cat(paste("% Correct:", round(100 * sum(diag(as.matrix(conf_mat))) / sum(as.matrix(conf_mat)), 2 ), "\n" )  )
+cat(paste("% Correct (No Unknowns):", round(100 * sum(diag(as.matrix(conf_mat))) / (sum(as.matrix(conf_mat)) - sum(conf_mat$UNK) ), 2 ), "\n" )  )
 cat("\n\n")
 
-cat(paste("# Uknown: ", sum(conf_mat$UNK)))
-cat(paste("\n% Unknown:", round(100 * sum(conf_mat$UNK) / sum(as.matrix(conf_mat)), 2 ) ))
-cat("\n\n")
 
 #### Cosine Distance ####
 distance_mat <- matrix(NA, nrow=nrow(avg_mat), ncol=nrow(avg_mat))

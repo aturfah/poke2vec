@@ -43,6 +43,6 @@ if __name__ == "__main__":
     model = model.Model(data_mat, label_mat, weight_mat)
     model.train(ModelConfig().numEpochs)
 
-    conf_matrix = model.test(test_data, test_lab, species_clause=False)
+    conf_matrix = model.test(test_data, test_lab, species_clause=True)
 
     output_results(model, onehot_mapping, conf_matrix)

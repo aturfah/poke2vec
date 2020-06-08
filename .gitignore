@@ -8,3 +8,6 @@ plot.png
 good_output/
 *.txt
 *.json
+
+
+!requirements.txt

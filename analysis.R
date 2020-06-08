@@ -16,9 +16,9 @@ mat_pcs <- prcomp(avg_mat)
 
 # jitter_amt = 0.00
 # png("plot.png", width=851, height=755)
-plot(mat_pcs$x[, 1], mat_pcs$x[, 2], col="lightblue", cex=0.7, pch=19)
+# plot(mat_pcs$x[, 1], mat_pcs$x[, 2], col="lightblue", cex=0.7, pch=19)
 # text(jitter(mat_pcs$x[, 2], amount=jitter_amt) ~ jitter(mat_pcs$x[, 1], amount=jitter_amt), labels = name_vec, cex=0.8)
-text(mat_pcs$x[, 2] ~ mat_pcs$x[, 1], labels = name_vec, cex=0.8)
+# text(mat_pcs$x[, 2] ~ mat_pcs$x[, 1], labels = name_vec, cex=0.8)
 # dev.off()
 
 
@@ -100,11 +100,12 @@ closest.n <- function(x, n) {
   temp[1:n]
 }
 
-test_pokemon <- c("Landorus-Therian", "Clefable", "Tapu-Bulu",
+test_pokemon <- c("Landorus-Therian", "Clefable", "Tapu-Bulu","Ferrothorn",
                   "Hawlucha", "Swampert-Mega", "Sableye-Mega",
-                  "Chansey", "Ribombee", "Ferrothorn", "Weavile", "Bisharp",
-                  "Dragapult", "Pelipper", "Seismitoad", "Excadrill")
-num_to_check = 10
+                  "Chansey", "Ribombee", "Weavile", "Bisharp",
+                  "Excadrill", "Tyranitar",
+                  "Dragapult", "Pelipper", "Seismitoad")
+num_to_check = 8
 
 for (poke in test_pokemon) {
   idx <- which(name_vec == poke)

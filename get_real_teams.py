@@ -40,6 +40,9 @@ def parse_teams(battle_json_url):
     # Only consider teams from or after the desired date
     if battle_time <  datetime.datetime(CONFIG.year, CONFIG.month, 1):
         raise RuntimeError("Date too early: {}".format(battle_json_url))
+    # Only consider battles above a certain rating
+    elif int(battle_json["rating"]) < CONFIG.level:
+        raise RuntimeError("Rating too low: {}".format(battle_json_url))
 
     battle_log = str(battle_json["log"]).splitlines()
 
@@ -75,6 +78,9 @@ def parse_teams(battle_json_url):
 
 def main():
     base_url = "https://replay.pokemonshowdown.com/search/?format={}&rating&output=html&page={}"
+    if not CONFIG.top_replays:
+        base_url = base_url = "https://replay.pokemonshowdown.com/search/?format={}&output=html&page={}"
+
     page_num = 0
     battle_urls = []
     while True:
@@ -98,6 +104,7 @@ def main():
         try:
             teams.extend(parse_teams(battle_log_url))
         except Exception as exc:
+            print(exc)
             pass
 
         print("Battle URL # {} | # Teams: {}".format(counter, len(teams)), end="\r")

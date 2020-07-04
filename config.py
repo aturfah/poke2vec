@@ -11,8 +11,8 @@ Path(TEAMS_TXT_DIR).mkdir(parents=True, exist_ok=True)
 TEAMS_MAT_DIR = "data/mat"
 Path(TEAMS_MAT_DIR).mkdir(parents=True, exist_ok=True)
 
-TIER = "gen7ou"
-MONTH = "2019-06"
+TIER = "gen8ou"
+MONTH = "2020-04"
 LEVEL = "1695"
 
 # Pull_data Config
@@ -28,7 +28,7 @@ class GenerateTeamsConfig():
     # Thresholds < 1 => pct of total from corresponding file
     def __init__(self):
         self.dataFiles = ["{month}_{tier}_{level}.json".format(month=MONTH, tier=TIER, level=LEVEL)]
-        self.thresholdLimit = [0.005]
+        self.thresholdLimit = [0.01]
         self.outputFilenamePrefix = "teams"
         self.uniqueFilenamePrefix = "unique"
         self.mprobFilenamePrefix = "mprob"
@@ -78,4 +78,6 @@ class TestTeamConfig():
     def __init__(self):
         self.year, self.month = [int(x) for x in MONTH.split("-")]
         self.tier = TIER
+        self.level = int(LEVEL)
+        self.top_replays = False
         self.out_file = "test_teams_{month}_{tier}.txt".format(month=MONTH, tier=TIER)

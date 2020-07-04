@@ -104,7 +104,7 @@ def main():
         try:
             teams.extend(parse_teams(battle_log_url))
         except Exception as exc:
-            print(exc)
+            # print(exc)
             pass
 
         print("Battle URL # {} | # Teams: {}".format(counter, len(teams)), end="\r")

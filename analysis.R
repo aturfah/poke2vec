@@ -14,7 +14,7 @@ rownames(avg_mat) <- name_vec
 mat_pcs <- prcomp(avg_mat)
 # plot(mat_pcs$sdev^2 / sum(mat_pcs$sdev^2), type='o', ylab="Pct Variance", ylim=c(0, 1))
 
-pcs_chosen <- c(2, 3)
+pcs_chosen <- c(1, 2)
 png("plot.png", width=3000, height=1500, res=100)
 par(mfrow=c(1, 2))
 plot(mat_pcs$x[, pcs_chosen[1]], mat_pcs$x[, pcs_chosen[2]],
@@ -113,7 +113,7 @@ closest.n <- function(x, n) {
 test_pokemon <- c("Landorus-Therian", "Clefable", "Tapu-Bulu","Ferrothorn",
                   "Hawlucha", "Swampert-Mega", "Sableye-Mega",
                   "Chansey", "Ribombee", "Weavile", "Bisharp",
-                  "Excadrill", "Tyranitar",
+                  "Excadrill", "Tyranitar", "Kommo-o",
                   "Dragapult", "Pelipper", "Seismitoad")
 num_to_check = 8
 

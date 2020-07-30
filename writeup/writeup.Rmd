@@ -4,22 +4,31 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+h1, h2, h3, h4, h5 {
+  font-weight: bold;
+}
+
+h4.author {
+font-weight: normal;
+}
 </style>
 
 ---
 title: 'Poke2Vec: Vector Embeddings of Pokemon'
 author: "Ali Turfah"
 output: html_document
-geometry: margin=2cm
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
 <center>
 ![Header](header.png)
 </center>
+
 
 ## Introduction / Background
 
@@ -28,13 +37,16 @@ For people unfamiliar with the '2vec' kinds of models, the idea is to go from a 
 Word2Vec uses the idea that a word is defined by the context it appears in. [Here](https://israelg99.github.io/2017-03-23-Word2Vec-Explained/) is a helpful link that explains Word2Vec in case you're interested. Expanding a bit, this means that words appearing in the same contexts convey similar meaning. Taken this way, it's not super unreasonable to expand this idea to Pokemon, since Pokemon that fill similar 'roles' within a team would probably find themselves having similar teammates. I will be using data from battles hosted on Pokemon Showdown (PS), an online Pokemon battling simulator.
 
 
+
 ## Model and Data Generation
 
 This part is a bit technical so for people who don't care about the gory details about "how" please skip to the [Results](#Results) section.
 
+
 #### Model
 
 The model I've described above (a word/pokemon being 'defined' by the words appearing in its context without consideration of position) is referred to as a Continuous Bag-of-Words approach. There are a lot of different ways to fit such a model, the way I've done it is using a two-hidden layer neural network to get two matrices of 'encodings' and 'decodings', and then average the resulting vectors element-wise to get the final embedding. 
+
 
 ## Data Generation - Theory
 In an ideal world, I would have access to the actual teams that were used on PS in a given month. In the real world, I do not have access to this data, so I have to estimate it.
@@ -72,6 +84,7 @@ From this, you break down the conditional joint using the independence assumptio
 
 For a more rigorous look into this process check out [this file](probability_generation_writeup.pdf) from the github repository.
 
+
 #### Data Generation - Process {#DGP_P}
 There are two main steps to actually generate the data, first getting the possible teams and second getting the number of occurrences.
 
@@ -79,13 +92,16 @@ The possible team combinations are generated using Beam Search. At a high level,
 
 Each metagame has a total number of battles, so I sample the teams from the total number of battles (the corresponding statistical distribution is a Multinomial, where each class corresponds to an individual team). There are 2 sampling set-ups available, taking the expected value (eg: $P(Team) * [\text{Total Number of battles}]$) and actually drawing from the distribution (implemented using the stick-breaking approach). This gives a resulting "sample metagame,” with teams and the number of times they occurred.
 
+
 #### Test Set
 A test set is scraped from the top-rated Pokemon Showdown replays for a given tier, with a minimum date threshold. This is to test generalizability of vectors fit to a given month to prediction in later months. As for why I can’t use this to generate the metagame, it only goes back 25 pages which is ~2600 teams at a given moment. I guess you could build a database of teams from the replays by pulling down the most recent ones constantly, but I didn’t think of that until after I wrote the team generation scripts (and these might not be representative of the metagame as a whole).
+
 
 ## Results {#Results}
 Alrighty enough of me going on and on about math or whatever, here are some hand-picked results that (a) show what this project is capable of and (b) hopefully get me some ~~grant funding~~ Smogon Technical Project clout.
 
 These results are from a simulation with 250,000 distinct teams based on the Gen7 OU 1695 usage stats for June 2019. The threshold for a pokemon to be considered 'relevant' is that it must get usage greater than 0.5% (this simulated metagame has 125 pokemon in it), capturing most of the pokemon reflected on the final iteration of the USUM Viability rankings. A 1% cutoff can be used and results in a metagame of 89 pokemon, but misses out on such dominating metagame threats as regular Swampert and Muk-Alola.
+
 
 #### Similarity to the actual 06-2019 OU Metagame
 The first thing I want establish is that the simulated metagame is somewhat similar to the actual metagame. Looking at the marginal distributions, the simulated metagame does better than a random vector which is promising. From playing around with the cutoff percentage, the less pokemon in the simulated metagame the better the KL divergence, up to a point.
@@ -109,6 +125,7 @@ So, in short, the simulated metagame captures the marginal pokemon probabilities
 ```
 Holy 74% Landorus-Therian usage. Note that the probabilities used are these numbers (which are the odds a specific team has one of these Pokemon on it) divided by 6, so the actual percents are a lot closer than the results here look; Landorus's difference is on the order of 12% vs 8%, and the rest of them are within 1-2% of the actual results.
 
+
 #### Prediction Accuracy
 The objective for fitting this 2vec model is, given 5 teammates, to predict the 6th (this is often referred to as _What’s his/her last?_). You don’t expect the model to perform incredibly well on this task, but I was pleasantly surprised by the results so I’m showing them here. The data is augmented where each team corresponds to 6 data points, one to predict each member from the remaining 5. The vector embeddings were of size 50. Trained for 15 epochs, the model ends up at ~23% accuracy on the test set of size 5729. I’ve included a “species clause” into the predictions (ie: if Clefable is on the team don’t predict Clefable), which improves the accuracy by a few percentage points.
 
@@ -127,6 +144,7 @@ Landorus-Therian         Magearna          Toxapex          Chansey
              197              167              148              138
 
 
+
 # Uknown:  340
 % Unknown: 5.93
 Unknown most commonly predicted as:
@@ -136,10 +154,12 @@ Landorus-Therian     Lopunny-Mega         Magearna          Toxapex
       0.06470588       0.04705882       0.02647059       0.02352941
 
 
+
 # Correct: 1305
 % Correct: 22.76
 % Correct (No Unknowns): 24.19
 ```
+
 
 #### Analysis of the Embeddings
 If you remember at the start of this I said that pokemon appearing in similar “contexts” should have similar vectors. Below are some pokemon I chose and the pokemon 10 pokemon whose vectors are closest by the [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) metric (which effectively is a measure of the angle between the vectors).
@@ -191,6 +211,7 @@ Furthest: Gastrodon 0.853 | Diggersby 0.777 | Garchomp-Mega 0.756 | Nidoking 0.6
 ```
 This is the last batch I’m going to analyze, which highlights something somewhat subtle. Looking at Weavile and Bisharp, you see quickly that there are two different types of teammates showing up: Stall and more offensive ones. This could be an artifact of the way teams are generated, but if not it means that different parts of the pokemon vectors are able to encode different aspects of a pokemon’s teammates (ex: Weavile & Bisharp both provide pursuit support, which stall teams appreciate). Excadrill is in a similar boat, where I think one set of the nearest teammates are Sand Teams and the others like Sash Lead Excadrill (or at the very least appreciate Rapid Spin Excadrill). Seismitoad is in the same boat, except this time it's Mono-Ground and Rain teams (plus the people who use it like Gastrodon).
 
+
 #### Overall Metagame Scatterplot
 If you’ve looked at word vectors I’m sure you’ve seen those scatterplots where fruits and european country capitals form their own clusters, so here is the analogous visualization that you can make from the pokemon vector embeddings. Note that, as with any dimension reduction, information will be lost so don’t take this visualization as the end-all be-all. That being said, outside of the mass cluster at the center you do see some well-defined groupings based on playstyle. Please forgive the size it's a bit hard to get the text to not be an overlapped mess but still be readable.
 
@@ -200,10 +221,12 @@ If you’ve looked at word vectors I’m sure you’ve seen those scatterplots w
 
 Around (-2, -1) you see, with few exceptions, a cluster of stall pokemon like Skarmory, Chansey, and Sableye-Mega. Looking to (-1, 3) you pretty much have different flavors of HO pokemon. Kind of funny but far to the right (4, 0) you have some of the Trick Room setters/abusers. If you plot different Principal Components, you see different clusters (I think 3 and 4 gives a very strong Trick Room cluster). The actual xy-positions are meaningless but similar pokemon clustering together was the ultimate point of this, so between this and the earlier analysis of cosine distance I hope I’ve convinced you that the goal has (at least somewhat) been achieved.
 
+
 ## Duplicating These Results
 The link to the github is included at the end. There isn't much there besides the code but I'll fix that eventually. For anyone wanting to run this on their own, the most time-consuming tasks are generating the teams and pulling down the test set. My computer takes 15-16 minutes to simulate the metagame of 250,000 distinct teams from 125 pokemon (the config.py file has times for different metagame sizes/number of teams if you’re interested). Results are similar with less teams, if you run into memory problems (the 125x250K consumes ~23GB of RAM). Calls to get replay logs are always slow, but generating the test set is not too bad/only needs to be done once.
 
 Fitting the embeddings should take less than 5 minutes if you’re on a GPU ; it is a relatively small one with only 2 matrices that need to be estimated. If you run into time problems on a CPU, you can tweak the metagame size to get a smaller training set, increase the batch size, or reduce the number of epochs. If you opt for reducing epochs consider reducing the dimensionality of the embeddings as well.
+
 
 ## Conclusion
 That's all I've got so far folks. Hopefully you found it as interesting as it was for me to code up. I can come up with the results for other metagames if people are interested in seeing them as well, for people who don't want to go through the trouble of setting up the environment. That being said, thanks for reading and hope you have an awesome day!
